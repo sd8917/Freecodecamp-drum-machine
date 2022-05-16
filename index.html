@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drum application</title>
+    <script src="drumKit.js"></script>
+    <style>
+      h5 {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #8d8d8d;
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+        align-items: center;
+        box-sizing: border-box;
+      }
+
+      #drum-machine {
+        width: 50%;
+        border: 3px solid #e6aa3c;
+        padding: 20px 10px;
+        background-color: #b3b3b3;
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+      }
+
+      .row {
+        display: flex;
+      }
+
+      #drum-0,
+      #drum-1,
+      #drum-2,
+      #drum-3,
+      #drum-4,
+      #drum-5,
+      #drum-6,
+      #drum-7,
+      #drum-8 {
+        height: 30px;
+        width: 30px;
+        background-color: #808080;
+        padding: 10px;
+        margin: 2px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+        box-shadow: 2px 2px rgba(0, 0, 0, 0.6);
+      }
+
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 50px;
+        height: 24px;
+      }
+
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: black;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 4px;
+        bottom: 4px;
+        background-color: #0000ff;
+        -webkit-transition: 0.4s;
+        transition: 0.4s;
+      }
+
+      input:checked+.slider {
+        background-color: black;
+      }
+
+      input:focus+.slider {
+        box-shadow: 0 0 1px black;
+      }
+
+      input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+      }
+
+      #display {
+        background-color: #a2a2a2;
+        padding: 5px;
+        width: 80px;
+        height: 20px;
+   
+        font-size: 10px;
+      }
+
+      .right-drum-pad-controller {
+        margin-right: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+      }
+      .power,
+      .bank {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      button {
+        background-color: #808080;
+        border: 0;
+      }
+      .active{
+        background-color: #e6aa3c;
+      }
+      
+    </style>
+  </head>
+
+  <body>
+    <div id="drum-machine">
+      <div class="left-drum-pad-container">
+        <div class="row">
+          <div class="drum-pad" id="drum-0" onclick="play('Q')">Q
+              <audio src="./clips/sounds_crash.mp3" class="clip" id="Q">
+          </div>
+          <div  class="drum-pad" id="drum-1" onclick="play('W')">W
+            <audio src="./clips/sounds_kick-bass.mp3" class="clip" id="W">>
+          </div>
+          <div  class="drum-pad" id="drum-2" onclick="play('E')">E
+            <audio src="./clips/sounds_snare.mp3" class="clip" id="E">
+          </div>
+        </div>
+        <div class="row">
+          <div  class="drum-pad" id="drum-3" onclick="play('A')">A
+            <audio src="./clips/sounds_tom-1.mp3" class="clip" id="A">
+
+          </div>
+          <div  class="drum-pad" id="drum-4" onclick="play('S')">S
+            <audio src="./clips/sounds_tom-2.mp3" class="clip" id="S">
+          </div>
+          <div  class="drum-pad" id="drum-5" onclick="play('D')">D
+            <audio src="./clips/sounds_tom-3.mp3" class="clip" id="D">
+          </div>
+        </div>
+        <div class="row">
+          <div  class="drum-pad" id="drum-6" onclick="play('Z')">Z
+            <audio src="./clips/sounds_tom-4.mp3" class="clip" id="Z">
+          </div>
+          <div  class="drum-pad" id="drum-7" onclick="play('X')">X
+            <audio src="./clips/sounds_tom-1.mp3" class="clip" id="X">
+
+          </div>
+          <div class="drum-pad"  id="drum-8" onclick="play('C')">C
+            <audio src="./clips/sounds_snare.mp3" class="clip" id="C">
+            
+          </div>
+        </div>
+      </div>
+      <div class="right-drum-pad-controller">
+        <div class="power">
+          <h5>Power</h5>
+
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div id="display">
+          <p></p>
+        </div>
+        <!-- SOUND VOLUME -->
+
+        <input type="range" min="1" max="100"  id="myRange" onchange="setVolume()"/>
+
+        <div class="power">
+          <h5>Bank</h5>
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js" >
+
+  </script>
+
+</html>
